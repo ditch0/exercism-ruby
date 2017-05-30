@@ -4,11 +4,11 @@ class Crypto
   end
 
   def normalize_plaintext
-    @message.gsub(/\W+/, '').downcase
+    @normalize_plaintext ||= @message.gsub(/\W+/, '').downcase
   end
 
   def size
-    Math.sqrt(normalize_plaintext.length).ceil
+    @size ||= Math.sqrt(normalize_plaintext.length).ceil
   end
 
   def plaintext_segments
