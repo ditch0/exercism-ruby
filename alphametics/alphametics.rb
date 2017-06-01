@@ -11,16 +11,9 @@ class Alphametics
 
   def solve
     (0..9).to_a.permutation(variables.count) do |values|
-      variables_values = Hash[variables.zip values]
-      return variables_values if correct_solution?(variables_values)
+      return Hash[variables.zip values] if correct_solution?(values)
     end
     {}
-  end
-
-  def correct_solution?(variables_values)
-    solution = equation.gsub(variables_regexp, variables_values)
-    return false if solution =~ /(^| )[0]+\d/
-    eval(solution)
   end
 
   private
@@ -36,8 +29,10 @@ class Alphametics
       .uniq
   end
 
-  def variables_regexp
-    @variables_regexp ||= Regexp.union(variables)
+  def correct_solution?(values)
+    solution = equation.tr(variables.join, values.join)
+    return false if solution =~ /(^| )[0]+\d/
+    eval(solution)
   end
 end
 
